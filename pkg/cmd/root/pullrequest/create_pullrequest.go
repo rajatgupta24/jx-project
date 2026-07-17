@@ -135,7 +135,6 @@ func (o *CreatePullRequestOptions) Run() error {
 		o.Dir = dir
 	}
 	scmClient := o.ScmClient
-	gitInfo := o.GitURL
 
 	ctx := context.Background()
 	fullName := o.FullRepositoryName
@@ -144,18 +143,19 @@ func (o *CreatePullRequestOptions) Run() error {
 		return errors.Wrapf(err, "failed to find repository %s", fullName)
 	}
 
-	user, _, err := scmClient.Users.Find(ctx)
-	if err != nil {
-		return errors.Wrapf(err, "failed to find the current user")
-	}
-
-	// Rebuild the gitInfo so that we get all the info we need
-	currentUser := user.Login
-	if o.Fork && currentUser != gitInfo.Organisation {
-		forkName := scm.Join(currentUser, gitInfo.Name)
-		_, _, err = scmClient.Repositories.Find(ctx, forkName)
+	if o.Fork {
+		user, _, err := scmClient.Users.Find(ctx)
 		if err != nil {
-			return errors.Wrapf(err, "failed to find repository %s, does the fork exist? Try running without --fork", forkName)
+			return errors.Wrapf(err, "failed to find the current user")
+		}
+		currentUser := user.Login
+		gitInfo := o.GitURL
+		if currentUser != gitInfo.Organisation {
+			forkName := scm.Join(currentUser, gitInfo.Name)
+			_, _, err = scmClient.Repositories.Find(ctx, forkName)
+			if err != nil {
+				return errors.Wrapf(err, "failed to find repository %s, does the fork exist? Try running without --fork", forkName)
+			}
 		}
 	}
 
