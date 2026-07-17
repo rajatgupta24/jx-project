@@ -12,7 +12,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// IsRemoteClusterGitRepository returns true if we have detected a GitOps repository for Jenkins X 3.x
+// IsRemoteClusterGitRepository returns true if we have detected a GitOps repository for JayeX 3.x
 func IsRemoteClusterGitRepository(dir string) (bool, error) {
 	fileNames := []string{
 		filepath.Join(dir, ".lighthouse", "jenkins-x", "triggers.yaml"),

@@ -19,7 +19,7 @@ type ImportDestination struct {
 	JenkinsfileRunner JenkinsfileRunnerDestination
 }
 
-// JenkinsXDestination configures how to import to Jenkins X
+// JenkinsXDestination configures how to import to JayeX
 type JenkinsXDestination struct {
 	Enabled bool
 }
@@ -37,7 +37,7 @@ type JenkinsfileRunnerDestination struct {
 }
 
 const (
-	jenkinsXDestination = "Jenkins X automated cloud native pipelines via Tekton"
+	jenkinsXDestination = "JayeX automated cloud native pipelines via Tekton"
 )
 
 // PickImportDestination picks where to import the project to
@@ -138,7 +138,7 @@ func (o *ImportOptions) PickImportDestination(devEnvCloneDir string) (ImportDest
 	actions[text] = ImportDestination{JenkinsX: JenkinsXDestination{Enabled: true}, JenkinsfileRunner: JenkinsfileRunnerDestination{Enabled: true}}
 
 	name, err := o.Input.PickNameWithDefault(actionChoices, "How would you like to import this project?",
-		"", "you can import into Jenkins X and use cloud native pipelines with Tekton or import in a Jenkins server")
+		"", "you can import into JayeX and use cloud native pipelines with Tekton or import in a Jenkins server")
 	if err != nil {
 		return o.Destination, err
 	}

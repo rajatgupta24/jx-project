@@ -55,7 +55,7 @@ func (o *ImportOptions) addSourceConfigPullRequest(gitURL, gitKind string) (bool
 		BranchName:        "",
 		PullRequestNumber: 0,
 		CommitTitle:       fmt.Sprintf("chore: import repository %s", safeGitURL),
-		CommitMessage:     "this commit will trigger a pipeline to [generate the CI/CD configuration](https://jenkins-x.io/v3/about/how-it-works/#importing--creating-quickstarts) which will create a second commit on this Pull Request before it auto merges",
+		CommitMessage:     "this commit will trigger a pipeline to [generate the CI/CD configuration](https://jayex.io/v3/about/how-it-works/#importing--creating-quickstarts) which will create a second commit on this Pull Request before it auto merges",
 		ScmClient:         o.ScmFactory.ScmClient,
 		BatchMode:         o.BatchMode,
 		UseGitHubOAuth:    false,
