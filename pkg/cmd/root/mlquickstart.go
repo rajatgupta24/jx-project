@@ -30,7 +30,7 @@ var (
 		This will create two new projects for you from the selected template. One for training and one for deploying a model as a service.
 		It will exclude any work-in-progress repos (containing the "WIP-" pattern)
 
-		For more documentation see: https://jenkins-x.io/v3/mlops/
+		For more documentation see: https://jayex.io/v3/mlops/
 
 ` + helper.SeeAlsoText("jx project"))
 

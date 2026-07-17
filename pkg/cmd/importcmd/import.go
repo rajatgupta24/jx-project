@@ -131,14 +131,14 @@ const (
 
 var (
 	importLong = templates.LongDesc(`
-		Imports a local folder or Git repository into Jenkins X.
+		Imports a local folder or Git repository into JayeX.
 
 		If you specify no other options or arguments then the current directory is imported.
 	    Or you can use '--dir' to specify a directory to import.
 
 	    You can specify the git URL as an argument.
 
-		For more documentation see: [https://jenkins-x.io/docs/using-jx/creating/import/](https://jenkins-x.io/docs/using-jx/creating/import/)
+		For more documentation see: https://jayex.io/v3/develop/create-project/#import-an-existing-project
 
 `)
 
@@ -177,7 +177,7 @@ func NewCmdImportAndOptions() (*cobra.Command, *ImportOptions) {
 
 	cmd := &cobra.Command{
 		Use:     "import",
-		Short:   "Imports a local project or Git repository into Jenkins X",
+		Short:   "Imports a local project or Git repository into JayeX",
 		Long:    importLong,
 		Example: fmt.Sprintf(importExample, common.BinaryName, common.BinaryName, common.BinaryName, common.BinaryName, common.BinaryName, common.BinaryName),
 		Run: func(_ *cobra.Command, _ []string) {
@@ -205,7 +205,7 @@ func (o *ImportOptions) AddImportFlags(cmd *cobra.Command, createProject bool) {
 	cmd.Flags().StringVarP(&o.Dir, "dir", "", ".", "Specify the directory to import")
 	cmd.Flags().StringVarP(&o.PipelineCatalogDir, "pipeline-catalog-dir", "", "", "The pipeline catalog directory you want to use instead of the buildPackGitURL in the dev Environment Team settings. Generally only used for testing pipelines")
 	cmd.Flags().StringVarP(&o.Repository, "name", notCreateProject("n"), "", "Specify the Git repository name to import the project into (if it is not already in one)")
-	cmd.Flags().BoolVarP(&o.DryRun, "dry-run", "", false, "Performs local changes to the repo but skips the import into Jenkins X")
+	cmd.Flags().BoolVarP(&o.DryRun, "dry-run", "", false, "Performs local changes to the repo but skips the import into JayeX")
 	cmd.Flags().BoolVarP(&o.DisableBuildPack, "no-pack", "", false, "Disable trying to default a Dockerfile and Helm Chart from the pipeline catalog pack")
 	cmd.Flags().BoolVarP(&o.DisableMaven, "no-maven-fix", "", false, "Disable trying to fix existing pom.xml")
 	cmd.Flags().StringVarP(&o.ImportGitCommitMessage, "import-commit-message", "", "", "Specifies the initial commit message used when importing the project")
@@ -216,10 +216,10 @@ func (o *ImportOptions) AddImportFlags(cmd *cobra.Command, createProject bool) {
 	cmd.Flags().StringVarP(&o.DeployKind, "deploy-kind", "", "", fmt.Sprintf("The kind of deployment to use for the project. Should be one of %s", strings.Join(deployKinds, ", ")))
 	cmd.Flags().BoolVarP(&o.DeployOptions.Canary, constants.OptionCanary, "", false, "should we use canary rollouts (progressive delivery) by default for this application. e.g. using a Canary deployment via flagger. Requires the installation of flagger and istio/gloo in your cluster")
 	cmd.Flags().BoolVarP(&o.DeployOptions.HPA, constants.OptionHPA, "", false, "should we enable the Horizontal Pod Autoscaler for this application.")
-	cmd.Flags().BoolVarP(&o.Destination.JenkinsX.Enabled, "jx", "", false, "if you want to default to importing this project into Jenkins X instead of a Jenkins server if you have a mixed Jenkins X and Jenkins cluster")
-	cmd.Flags().StringVarP(&o.Destination.JenkinsfileRunner.Image, "jenkinsfilerunner", "", "", "if you want to import into Jenkins X with Jenkinsfilerunner this argument lets you specify the container image to use")
+	cmd.Flags().BoolVarP(&o.Destination.JenkinsX.Enabled, "jx", "", false, "if you want to default to importing this project into JayeX instead of a Jenkins server if you have a mixed JayeX and Jenkins cluster")
+	cmd.Flags().StringVarP(&o.Destination.JenkinsfileRunner.Image, "jenkinsfilerunner", "", "", "if you want to import into JayeX with Jenkinsfilerunner this argument lets you specify the container image to use")
 	cmd.Flags().StringVar(&o.ServiceAccount, "service-account", "tekton-bot", "The Kubernetes ServiceAccount to use to run the initial pipeline")
-	cmd.Flags().StringVar(&o.SchedulerName, "scheduler", "in-repo", "Change schedulerName, More info about Scheduler: https://jenkins-x.io/v3/develop/faq/config/repos/#how-do-i-customise-a-scheduler")
+	cmd.Flags().StringVar(&o.SchedulerName, "scheduler", "in-repo", "Change schedulerName, More info about Scheduler: https://jayex.io/v3/develop/faq/config/repos/#how-do-i-customise-a-scheduler")
 
 	cmd.Flags().BoolVarP(&o.WaitForSourceRepositoryPullRequest, "wait-for-pr", "", true, "waits for the Pull Request generated on the cluster environment git repository to merge")
 	cmd.Flags().BoolVarP(&o.NoDevPullRequest, "no-dev-pr", "", false, "disables generating a Pull Request on the cluster git repository")
@@ -403,7 +403,7 @@ func (o *ImportOptions) Run() error {
 			return err
 		}
 		if o.Destination.Jenkins.Server != "" {
-			// let's not run the Jenkins X build packs
+			// let's not run the JayeX build packs
 			o.DisableBuildPack = true
 		} else if o.Destination.JenkinsfileRunner.Enabled {
 			o.DisableBuildPack = false
@@ -432,7 +432,7 @@ func (o *ImportOptions) Run() error {
 	o.OnCompleteCallback = func() error {
 		if !o.DisableBuildPack {
 			log.Logger().Infof("committing the pipeline catalog changes...")
-			_, err = gitclient.AddAndCommitFiles(o.Git(), o.Dir, "chore: Jenkins X build pack")
+			_, err = gitclient.AddAndCommitFiles(o.Git(), o.Dir, "chore: JayeX build pack")
 			if err != nil {
 				return err
 			}
@@ -476,7 +476,7 @@ func (o *ImportOptions) Run() error {
 			return errors.Wrapf(err, "failed to fix dockerfile and maven")
 		}
 
-		log.Logger().Info("dry-run so skipping actual import to Jenkins X")
+		log.Logger().Info("dry-run so skipping actual import to JayeX")
 		return nil
 	}
 
@@ -974,7 +974,7 @@ func (o *ImportOptions) renameChartToMatchAppName() error {
 	}
 	fileSlice, err := os.ReadDir(chartsDir)
 	if err != nil {
-		return fmt.Errorf("error matching a Jenkins X build pack name with chart folder %v", err)
+		return fmt.Errorf("error matching a JayeX build pack name with chart folder %v", err)
 	}
 	for _, fi := range fileSlice {
 		if fi.IsDir() {

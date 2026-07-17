@@ -141,7 +141,7 @@ func (o *ImportOptions) InvokeDraftPack(i *InvokeDraftPack) (string, error) {
 		return "", err
 	}
 
-	// let's assume Jenkins X import mode
+	// let's assume JayeX import mode
 	//
 	// was:
 	// lets configure the draft pack mode based on the team settings

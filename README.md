@@ -6,9 +6,9 @@
 [![LICENSE](https://img.shields.io/github/license/jenkins-x-plugins/jx-project.svg)](https://github.com/jenkins-x-plugins/jx-project/blob/master/LICENSE)
 [![Slack Status](https://img.shields.io/badge/slack-join_chat-white.svg?logo=slack&style=social)](https://slack.k8s.io/)
 
-`jx project` is a plugin to allow quickstarts to be created and repositories to be imported into either [Jenkins](https://jenkins.io/) servers or [Jenkins X](https://jenkins-x.io/).
+`jx project` is a plugin to allow quickstarts to be created and repositories to be imported into either [Jenkins](https://jenkins.io/) servers or [JayeX](https://jayex.io/).
 
-The idea is to provide a single developer UX around creating quickstarts and importing repositories whether you use just Jenkins or just Jenkins X or a combination of both.
+The idea is to provide a single developer UX around creating quickstarts and importing repositories whether you use just Jenkins or just JayeX or a combination of both.
 
 ## Getting Started
 
@@ -18,7 +18,7 @@ Download the [jx-project binary](https://github.com/jenkins-x-plugins/jx-project
 
 Just run the `jx project` command line and follow the instructions.
 
-If you have ever seen [Jenkins X](https://jenkins-x.io/) or have used `jx import` or `jx create quickstart` you can try run those directly via:
+If you have ever seen [JayeX](https://jayex.io/) or have used `jx import` or `jx create quickstart` you can try run those directly via:
 
 * `jx project quickstart`
 * `jx project mlquickstart`
@@ -28,7 +28,7 @@ If you have ever seen [Jenkins X](https://jenkins-x.io/) or have used `jx import
 
 When importing a project `jx project` looks for a `Jenkinfile` in the source code. 
 
-If there is no `Jenkinsfile` then the wizard assumes you wish to proceed with a [Jenkins X Pipeline](https://jenkins-x.io/docs/concepts/jenkins-x-pipelines/) based on Tekton and imports it in the usual Jenkins X way. You also get to confirm the kind of build pack and language you wish to use for the automated CI/CD - so its easy to import any workload whether its a library, a binary, a container image, a helm chart or a fully blown microservice for automated kubernetes based CI/CD.
+If there is no `Jenkinsfile` then the wizard assumes you wish to proceed with a [JayeX Pipeline](https://jayex.io/v3/about/concepts/deployment-lifecycle/) based on Tekton and imports it in the usual JayeX way. You also get to confirm the kind of build pack and language you wish to use for the automated CI/CD - so its easy to import any workload whether its a library, a binary, a container image, a helm chart or a fully blown microservice for automated kubernetes based CI/CD.
 
 If a `Jenkinsfile` is present  then the wizard assumes you may wish to use a Jenkins server or [Jenkinsfile Runner](https://github.com/jenkinsci/jenkinsfile-runner) to run the pipelines, so it presents you with a list of the available Jenkins options to choose from. 
 
@@ -41,14 +41,14 @@ When using a Jenkins Server you get two options:
 
 When importing a project these approaches are supported:
 
-* [Jenkins X Pipeline](https://jenkins-x.io/docs/concepts/jenkins-x-pipelines/) using Tekton 
+* [JayeX Pipeline](https://jayex.io/v3/about/concepts/deployment-lifecycle/) using Tekton 
 * Jenkins pipelines via `Multi Branch Project`
 * [lighthouse](https://github.com/jenkins-x/lighthouse) for ChatOps triggering a remote Jenkins pipeline via [trigger-pipeline](https://github.com/jenkins-x-labs/trigger-pipeline) (without using `Multi Branch Project`)
 * [Jenkinsfile Runner](https://github.com/jenkinsci/jenkinsfile-runner) based pipelines in Tekton. You can override the container image used for the pipeline on import via the `--jenkinsfilerunner myimage:1.2.3` command line argument 
  
-## Changes since `jx import`
+## Changes since `jx import` in Jenkins X 2
 
-For those of you who know [Jenkins X](https://jenkins-x.io/) and have used [jx import](https://jenkins-x.io/commands/jx_import/) before this wizard is a little different:
+For those of you who have used `jx import` in Jenkins X 2 before.
 
 * the commands are a little different:
   * `jx create import` is now `jx project import`
@@ -56,9 +56,9 @@ For those of you who know [Jenkins X](https://jenkins-x.io/) and have used [jx i
   * `jx create mlquickstart` is now `jx project mlquickstart`
   * `jx create project` is now `jx project`
   * `jx create spring` is now `jx project spring`
-* when importing to Jenkins X we ask which build pack you wish to use (e.g. classic or kubernetes) so that you can import java libraries or node modules easily in addition to kubernetes native applications
+* when importing to JayeX we ask which build pack you wish to use (e.g. classic or kubernetes) so that you can import java libraries or node modules easily in addition to kubernetes native applications
 * the wizard will prompt you for the pack name (language) once the detection has occurred. Usually the pack name detection is good enough. e.g. detecting `maven` but you may wish to change the version of the pack (e.g. `maven-java11`)
-* when importing a project and you are using Jenkins X and Jenkins in the same cluster you get asked whether you want to import the project into [Jenkins X](https://jenkins-x.io/) or to pick which Jenkins server to use
+* when importing a project and you are using JayeX and Jenkins in the same cluster you get asked whether you want to import the project into [JayeX](https://jayex.io/) or to pick which Jenkins server to use
 * we support 2 modes of importing projects to Jenkins
   * regular Jenkins import where a Multi Branch Project is used and Jenkins processes the webhooks
   * ChatOps mode: we use [lighthouse](https://github.com/jenkins-x/lighthouse) to handle the webhooks and ChatOps and then when triggered we trigger regular pipelines inside the Jenkins server 

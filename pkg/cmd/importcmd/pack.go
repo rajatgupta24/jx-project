@@ -18,7 +18,7 @@ import (
 /**
 CREDIT https://github.com/Azure/draft/blob/9705e36dc23c27c9ef54dc2469dd86ac6093f0f4/pkg/draft/pack/pack.go
 
-This code was originally written in Draft but because Jenkins X build packs doesn't always contain a charts dir we
+This code was originally written in Draft but because JayeX build packs doesn't always contain a charts dir we
 want to "continue" when looping around files to copy rather than return an error
 */
 
